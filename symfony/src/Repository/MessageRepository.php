@@ -6,6 +6,7 @@ use App\Entity\Message;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -50,6 +51,28 @@ class MessageRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    public function getPage($currentPage = 1, $limit = 5)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->orderBy('p.posted', 'DESC')
+            ->getQuery();
+
+        $paginator = $this->paginate($query, $currentPage, $limit);
+
+        return $paginator;
+    }
+
+    public function paginate($dql, $page = 1, $limit = 5)
+    {
+        $paginator = new Paginator($dql);
+
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+
+        return $paginator;
     }
 
     // /**
