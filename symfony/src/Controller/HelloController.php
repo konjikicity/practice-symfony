@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Person;
+use App\Form\HelloType;
 use App\Form\PersonType;
 use App\Repository\PersonRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,14 +31,22 @@ class HelloController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $repository = $this->getDoctrine()
-            ->getRepository(Person::class);
+        $formobj = new HelloForm();
+        $form = $this->createForm(HelloType::class, $formobj);
+        $form->handleRequest($request);
 
-        $data = $repository->findall();
+        if ($request->getMethod() == 'POST') {
+            $formobj = $form->getData();
+            $this->addFlash('info.mail', $formobj);
+            $msg = 'Hello, ' . $formobj->getName() . '!!';
+        } else {
+            $msg = 'Send Form';
+        }
 
         return $this->render('hello/index.html.twig', [
             'title' => 'Hello',
-            'data' => $data,
+            'message' => $msg,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -120,7 +129,7 @@ class HelloController extends AbstractController
 
         return $this->render('hello/create.html.twig', [
             'title' => 'Hello',
-            'message' => 'Update Entity id='.$person->getId(),
+            'message' => 'Update Entity id=' . $person->getId(),
             'form' => $form->createView(),
         ]);
     }
@@ -150,7 +159,7 @@ class HelloController extends AbstractController
 
         return $this->render('hello/create.html.twig', [
             'title' => 'Hello',
-            'message' => 'Delete Entity id='.$person->getId(),
+            'message' => 'Delete Entity id=' . $person->getId(),
             'form' => $form->createView(),
         ]);
     }
@@ -168,5 +177,37 @@ class FindForm
     public function setFind($find)
     {
         $this->find = $find;
+    }
+}
+
+class HelloForm
+{
+    private $name;
+
+    private $mail;
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function getMail()
+    {
+        return $this->mail;
+    }
+
+    public function setMail($mail)
+    {
+        $this->mail = $mail;
+    }
+
+    public function __toString()
+    {
+        return '*** ' . $this->name . '[' . $this->mail . '] ***';
     }
 }

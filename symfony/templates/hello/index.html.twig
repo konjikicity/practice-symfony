@@ -4,21 +4,22 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-<h2>Person table</h2>
-<table>
-<tr>
-<th>ID</th>
-<th>Name</th>
-<th>Mail</th>
-<th>Age</th>
-</tr>
-{% for item in data%}
-<tr>
-<td>{{ item.id }}</td>
-<td>{{ item.name }}</td>
-<td>{{ item.mail }}</td>
-<td>{{ item.age }}</td>
-</tr>
+<style>
+.flash-notice {
+    color:red;
+    font-size: 16pt;
+    font-weight:bold;
+}
+</style>
+<h2>Hello</h2>
+{% for message in app.flashes('info.mail') %}
+    <div class="flash-notice">
+        {{ message }}
+    </div>
 {% endfor %}
-</table>
-{% endblock  %}
+<p>{{ message }}</p>
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
+{% endblock%}
+
