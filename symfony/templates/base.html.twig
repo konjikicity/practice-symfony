@@ -2,18 +2,53 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>tunamayo</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
             {#{{ encore_entry_link_tags('app') }}#}
         {% endblock %}
-
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
     </head>
+    <style>
+    h1 {
+    font-size: 72pt;
+    font-weight: bold;
+    text-align: right;
+    letter-specing: -8px;
+    color: #f0f0f0;
+    margin: -30px -25px;
+    }
+    div.body {
+    margin: -70px 10px 10px 10px;
+    font-size: 18pt;
+    color: #77;
+    }
+    div#footer{
+    position: fixed;
+    bottom: 25px;
+    left: 10px;
+    font-size: 10pt;
+    color:#aaa;
+    }
+    th {
+    backgroud: #009;
+    color: white;
+    padding: 5px 15px;
+    font-size: 14pt;
+    }
+    td {
+    backgroud: #eee;
+    padding: 5px 15px;
+    }
+    </style>
     <body>
-        {% block body %}{% endblock %}
+        <h1>{% block title %}{% endblock %}</h1>
+        <div class="body">
+            {% block body %}{% endblock %}
+        </div>
+        <div id="footer">
+            <p>copyrigt 2018 SYODA-Tuyano</p>
+        </div>
+        {% block javascripts %}{% endblock %}
     </body>
 </html>
